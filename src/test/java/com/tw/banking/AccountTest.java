@@ -2,7 +2,8 @@ package com.tw.banking;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+
 import static org.mockito.Mockito.*;
 
 class AccountTest {
@@ -30,5 +31,21 @@ class AccountTest {
         account.withdraw(amount);
         //then
         verify(transactionRepository,times(1)).addWithdraw(amount);
+    }
+
+
+    @Test
+    public void should_transactionRepository_allTransactions_and_printer_print_be_called_when_account_printStatement(){
+        //given
+        TransactionRepository transactionRepository = mock(TransactionRepository.class);
+        Printer printer = mock(Printer.class);
+        Account account = new Account(transactionRepository,printer);
+        List<Transaction> transactionList = mock(List.class);
+        when(transactionRepository.allTransactions()).thenReturn(transactionList);
+        //when
+        account.printStatement();
+        //then
+        verify(printer,times(1)).print(transactionList);
+        verify(transactionRepository,times(1)).allTransactions();
     }
 }
