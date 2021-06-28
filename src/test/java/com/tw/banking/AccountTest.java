@@ -18,4 +18,17 @@ class AccountTest {
         //then
         verify(transactionRepository,times(1)).addDeposit(amount);
     }
+
+    @Test
+    public void should_transactionRepository_addWithdraw_be_called_when_account_withdraw_given_amount(){
+        //given
+        TransactionRepository transactionRepository = mock(TransactionRepository.class);
+        Printer printer = mock(Printer.class);
+        Account account = new Account(transactionRepository,printer);
+        int amount = 1;
+        //when
+        account.withdraw(amount);
+        //then
+        verify(transactionRepository,times(1)).addWithdraw(amount);
+    }
 }
